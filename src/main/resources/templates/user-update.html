@@ -35,23 +35,19 @@
             <input type="text" th:field="*{password}"/>
         </div>
         <br>
+        <h2>Roles:</h2>
+        <select name="selectedRoles" multiple="multiple">
+            <option th:each="role : ${roles}" th:value="${role.authority}" th:text="${role.authority}"></option>
+        </select>
         <input type="submit" class="submit-button" value="OK">
         <br><br>
-        <h5>Добавить новую роль:</h5>
-        <form th:action="@{'/admin/add-role/' + ${updatedUser.id}}" method="post">
-            <input type="text" name="newRole" placeholder="Введите новую роль" value="ROLE_">
-            <button type="submit">Добавить</button>
-        </form>
-        <ul>
-            <li th:each="role : ${updatedUser.authorities}">
-                <span th:text="${role.getAuthority()}"></span>
-                <form th:action="@{'/admin/remove-role/' + ${updatedUser.id}}" method="post">
-                    <input type="hidden" name="roleName" th:value="${role.authority}">
-                    <button type="submit">Удалить</button>
-                </form>
-            </li>
-        </ul>
     </form>
 </div>
+
+<br><br>
+<form action="/logout" method="get">
+    <button type="submit">logout</button>
+</form>
+
 </body>
 </html>

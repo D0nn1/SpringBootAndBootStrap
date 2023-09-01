@@ -31,7 +31,7 @@
             <td>
                 <span th:each="authority : ${user.authorities}" th:text="${authority.authority} + ' '"></span>
             </td>
-            <td><br>
+            <td>
                 <form th:action="@{/admin/updateInfo}" method="get">
                     <input type="hidden" name="userId" th:value="${user.id}">
                     <button type="submit">Update</button>
@@ -41,7 +41,7 @@
                     <button type="submit">Delete</button>
                 </form>
             </td>
-            <br><br>
+            <br>
         </tr>
     </th:block>
     </tbody>
@@ -49,6 +49,25 @@
 <br>
 <form action="/admin/addNewUser" method="get">
     <button type="submit">Add New User</button>
+</form>
+<br><br>
+<h3>Добавить роль</h3>
+<form th:action="@{/admin/add-role/}" method="post">
+    <input type="text" name="newRole" placeholder="Введите новую роль">
+    <button type="submit">Добавить</button>
+</form>
+<h3>Удалить роли</h3>
+<ul>
+    <li th:each="role : ${allRoles}">
+        <span th:text="${role.authority}"></span>
+        <form th:action="@{/admin/remove-role/}" method="post">
+            <input type="hidden" name="roleName" th:value="${role.authority}">
+            <button type="submit">Удалить</button>
+        </form>
+    </li>
+</ul>
+<form action="/logout" method="get">
+    <button type="submit">logout</button>
 </form>
 </body>
 </html>

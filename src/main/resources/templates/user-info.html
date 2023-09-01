@@ -36,15 +36,21 @@
         </div>
         <br>
         <h2>Roles:</h2>
-        <div th:each="role : ${roles}">
-            <label>
-                <input type="checkbox" name="selectedRoles" th:value="${role}" />
-                <span th:text="${role.authority}"></span>
-            </label>
-        </div>
+        <select name="selectedRoles" multiple="multiple">
+            <option th:each="role : ${roles}" th:value="${role.authority}" th:text="${role.authority}"></option>
+        </select>
+
         <input type="submit" class="submit-button" value="OK">
         <br><br>
     </form>
 </div>
+
+
+
+<br><br>
+<form action="/logout" method="get">
+    <button type="submit">logout</button>
+</form>
+
 </body>
 </html>

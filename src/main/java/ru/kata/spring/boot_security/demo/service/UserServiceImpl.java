@@ -13,6 +13,7 @@ import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -47,10 +48,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void saveUser(User user, List<String> roles) {
+        Collection<Role> listOfRoles = new ArrayList<>();
+        if (roles != null) {
+            listOfRoles = convertStringToRole(roles);
+        } else {
+            listOfRoles.add(new Role("ROLE_USER"));
+        }
+        user.setRoles(listOfRoles);
+        saveUser(user);
+    }
+
+    @Override
     public User getUser(int id) {
         Optional<User> optionalUser = userRepository.findById(id);
-        User user = optionalUser.orElse(null);
-        return user;
+        return optionalUser.orElse(null);
     }
 
     @Override
@@ -65,7 +77,27 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void removeRoleFromUser(int userId, String roleName) {
+    public void updateUser(User user, List<String> roles) {
+        Collection<Role> listOfRoles = new ArrayList<>();
+        if (roles != null) {
+            listOfRoles = convertStringToRole(roles);
+        } else {
+            listOfRoles.add(new Role("ROLE_USER"));
+        }
+        user.setRoles(listOfRoles);
+        saveUser(user);
+    }
+
+
+
+    @Override
+    public void removeRole(String roleName) {
+        Role role = roleRepository.getRoleByAuthority(roleName);
+        roleRepository.delete(role);
+    }
+
+    @Override
+    public void removeRole(int userId, String roleName) {
         User user = userRepository.getById(userId);
         List<Role> userRoles = (List<Role>) user.getRoles();
         Role roleToRemove = userRoles.stream()
@@ -96,6 +128,24 @@ public class UserServiceImpl implements UserService {
         userRoles.add(newRole);
         user.setRoles(userRoles);
         userRepository.save(user);
+    }
+
+    @Override
+    public Collection<Role> convertStringToRole(List<String> stringList) {
+        Collection<Role> listOfRoles = new ArrayList<>();
+        stringList.forEach(r -> listOfRoles.add(convertStringToRole(r)));
+        return listOfRoles;
+    }
+
+    @Override
+    public Role convertStringToRole(String string) {
+        Role role = roleRepository.getRoleByAuthority(string);
+        if (role == null) {
+            System.out.println("Role " + string + "not found");
+            role = new Role(string);
+            roleRepository.save(role);
+        }
+        return role;
     }
 
 

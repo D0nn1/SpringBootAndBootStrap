@@ -4,6 +4,7 @@ package ru.kata.spring.boot_security.demo.model;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -26,6 +27,11 @@ public class User implements UserDetails {
     private int age;
 
     private String password;
+
+    public void setPasswordAndEncode(String password) {
+        this.password = new BCryptPasswordEncoder().encode(password);
+    }
+
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles",
