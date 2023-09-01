@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Users</title>
+</head>
+<body>
+<h1>All Users</h1>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Surname</th>
+        <th>Username</th>
+        <th>Age</th>
+        <th>Authorities</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <th:block th:each="user : ${allUsers}">
+        <tr>
+            <td th:text="${user.id}"></td>
+            <td th:text="${user.name}"></td>
+            <td th:text="${user.surname}"></td>
+            <td th:text="${user.username}"></td>
+            <td th:text="${user.age}"></td>
+            <td>
+                <span th:each="authority : ${user.authorities}" th:text="${authority.authority} + ' '"></span>
+            </td>
+            <td><br>
+                <form th:action="@{/admin/updateInfo}" method="get">
+                    <input type="hidden" name="userId" th:value="${user.id}">
+                    <button type="submit">Update</button>
+                </form>
+                <form th:action="@{/admin/deleteUser}" method="get">
+                    <input type="hidden" name="userId" th:value="${user.id}">
+                    <button type="submit">Delete</button>
+                </form>
+            </td>
+            <br><br>
+        </tr>
+    </th:block>
+    </tbody>
+</table>
+<br>
+<form action="/admin/addNewUser" method="get">
+    <button type="submit">Add New User</button>
+</form>
+</body>
+</html>
