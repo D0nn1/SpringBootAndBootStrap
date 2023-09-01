@@ -36,17 +36,12 @@
         </div>
         <br>
         <h2>Roles:</h2>
-        <ul>
-            <!-- Iterate over roles and create checkboxes -->
-            <th:block th:each="role : ${roles}">
-                <li>
-                    <label>
-                        <input type="checkbox" name="selectedRoles" th:value="${role}" th:text="${role}">
-                    </label>
-                </li>
-            </th:block>
-        </ul>
-        <br>
+        <div th:each="role : ${roles}">
+            <label>
+                <input type="checkbox" name="selectedRoles" th:value="${role}" />
+                <span th:text="${role.authority}"></span>
+            </label>
+        </div>
         <input type="submit" class="submit-button" value="OK">
         <br><br>
     </form>
