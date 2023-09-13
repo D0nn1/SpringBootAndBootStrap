@@ -1,14 +1,12 @@
 package ru.kata.spring.boot_security.demo.service;
 
 
-
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 
-import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 public interface UserService extends UserDetailsService {
     List<User> getAllUsers();
@@ -28,11 +26,12 @@ public interface UserService extends UserDetailsService {
     void updateUser(User user, List<String> roles);
 
     void removeRole(int userId, String roleName);
+
     void removeRole(String roleName);
 
     void addRoleToCurrentUser(int userId, String roleName);
 
-    Collection<Role> convertStringToRole(List<String> stringList);
+    Set<Role> convertStringToRole(List<String> stringList);
 
     Role convertStringToRole(String string);
 }

@@ -2,8 +2,6 @@ package ru.kata.spring.boot_security.demo.service;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -13,11 +11,7 @@ import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.*;
 
 
 @Service
@@ -49,7 +43,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void saveUser(User user, List<String> roles) {
-        Collection<Role> listOfRoles = new ArrayList<>();
+        Set<Role> listOfRoles = new HashSet<>();
         if (roles != null) {
             listOfRoles = convertStringToRole(roles);
         } else {
@@ -78,7 +72,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateUser(User user, List<String> roles) {
-        Collection<Role> listOfRoles = new ArrayList<>();
+        Set<Role> listOfRoles = new HashSet<>();
         if (roles != null) {
             listOfRoles = convertStringToRole(roles);
         } else {
@@ -87,7 +81,6 @@ public class UserServiceImpl implements UserService {
         user.setRoles(listOfRoles);
         saveUser(user);
     }
-
 
 
     @Override
@@ -110,7 +103,7 @@ public class UserServiceImpl implements UserService {
             user.setRoles(userRoles);
             userRepository.save(user);
         } else {
-            System.out.printf("Role authority=%s not found in %s",
+            System.out.printf("UserService.removeRole: Role authority=%s not found in %s",
                     roleName, user.getUsername());
         }
     }
@@ -131,8 +124,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Collection<Role> convertStringToRole(List<String> stringList) {
-        Collection<Role> listOfRoles = new ArrayList<>();
+    public Set<Role> convertStringToRole(List<String> stringList) {
+        Set<Role> listOfRoles = new HashSet<>();
         stringList.forEach(r -> listOfRoles.add(convertStringToRole(r)));
         return listOfRoles;
     }
@@ -141,7 +134,6 @@ public class UserServiceImpl implements UserService {
     public Role convertStringToRole(String string) {
         Role role = roleRepository.getRoleByAuthority(string);
         if (role == null) {
-            System.out.println("Role " + string + "not found");
             role = new Role(string);
             roleRepository.save(role);
         }

@@ -77,7 +77,6 @@ public class AdminController {
     }
 
 
-
     @GetMapping("/deleteUser")
     public String deleteUser(@RequestParam("userId") int id) {
         userService.deleteUser(id);

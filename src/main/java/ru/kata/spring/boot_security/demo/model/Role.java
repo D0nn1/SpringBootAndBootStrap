@@ -1,13 +1,11 @@
 package ru.kata.spring.boot_security.demo.model;
 
 
-import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 
 @Entity
-@Data
 @Table(name = "roles")
 public class Role implements GrantedAuthority {
     @Id
@@ -26,5 +24,9 @@ public class Role implements GrantedAuthority {
     }
 
     public Role() {
+    }
+
+    public void setAuthority(String authority) {
+        this.authority = authority;
     }
 }
