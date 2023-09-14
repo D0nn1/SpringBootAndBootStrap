@@ -76,7 +76,7 @@ public class UserServiceImpl implements UserService {
         if (roles != null) {
             listOfRoles = convertStringToRole(roles);
         } else {
-            listOfRoles.add(new Role("ROLE_USER"));
+            listOfRoles.add(convertStringToRole("ROLE_USER"));
         }
         user.setRoles(listOfRoles);
         saveUser(user);
@@ -131,6 +131,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public Role convertStringToRole(String string) {
         Role role = roleRepository.getRoleByAuthority(string);
         if (role == null) {
