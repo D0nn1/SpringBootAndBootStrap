@@ -51,6 +51,7 @@ public class AdminController {
     @PostMapping("/saveUpdatedUser")
     public String saveUpdatedUser(@ModelAttribute("updatedUser") User user,
                                   @RequestParam(name = "selectedRoles", required = false) List<String> selectedRoles) {
+        user.setPasswordAndEncode(user.getPassword());
         userService.updateUser(user, selectedRoles);
         return "redirect:/admin/info";
     }
