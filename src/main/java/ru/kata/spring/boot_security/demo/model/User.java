@@ -1,6 +1,7 @@
 package ru.kata.spring.boot_security.demo.model;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -25,10 +26,6 @@ public class User implements UserDetails {
     private int age;
 
     private String password;
-
-    public void setPasswordAndEncode(String password) {
-        this.password = new BCryptPasswordEncoder().encode(password);
-    }
 
 
     @ManyToMany(fetch = FetchType.LAZY)

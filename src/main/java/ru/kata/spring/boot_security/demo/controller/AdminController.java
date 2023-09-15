@@ -42,8 +42,7 @@ public class AdminController {
     @PostMapping("/saveUser")
     public String saveUser(@ModelAttribute("user") User user,
                            @RequestParam(name = "selectedRoles", required = false) List<String> selectedRoles) {
-        user.setPasswordAndEncode(user.getPassword());
-        userService.saveUser(user, selectedRoles);
+        userService.saveUser(userService.setAndEncodePassword(user), selectedRoles);
         return "redirect:/admin/info";
     }
 
@@ -51,8 +50,7 @@ public class AdminController {
     @PostMapping("/saveUpdatedUser")
     public String saveUpdatedUser(@ModelAttribute("updatedUser") User user,
                                   @RequestParam(name = "selectedRoles", required = false) List<String> selectedRoles) {
-        user.setPasswordAndEncode(user.getPassword());
-        userService.updateUser(user, selectedRoles);
+        userService.saveUser(userService.setAndEncodePassword(user), selectedRoles);
         return "redirect:/admin/info";
     }
 

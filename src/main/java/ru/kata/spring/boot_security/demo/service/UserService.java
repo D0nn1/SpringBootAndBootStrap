@@ -34,4 +34,8 @@ public interface UserService extends UserDetailsService {
     Set<Role> convertStringToRole(List<String> stringList);
 
     Role convertStringToRole(String string);
+
+    String encodePassword(String password);
+
+    User setAndEncodePassword(User user);
 }
