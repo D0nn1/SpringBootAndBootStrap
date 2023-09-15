@@ -1,6 +1,8 @@
 package ru.kata.spring.boot_security.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -16,10 +18,12 @@ import java.util.List;
 public class AdminController {
 
     private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public AdminController(UserService userService) {
+    public AdminController(UserService userService, PasswordEncoder passwordEncoder) {
         this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping("/info")
@@ -42,7 +46,7 @@ public class AdminController {
     @PostMapping("/saveUser")
     public String saveUser(@ModelAttribute("user") User user,
                            @RequestParam(name = "selectedRoles", required = false) List<String> selectedRoles) {
-        userService.saveUser(userService.setAndEncodePassword(user), selectedRoles);
+        userService.saveUser(userService.setAndEncodePassword(user, passwordEncoder), selectedRoles);
         return "redirect:/admin/info";
     }
 
@@ -50,7 +54,7 @@ public class AdminController {
     @PostMapping("/saveUpdatedUser")
     public String saveUpdatedUser(@ModelAttribute("updatedUser") User user,
                                   @RequestParam(name = "selectedRoles", required = false) List<String> selectedRoles) {
-        userService.saveUser(userService.setAndEncodePassword(user), selectedRoles);
+        userService.saveUser(userService.setAndEncodePassword(user, passwordEncoder), selectedRoles);
         return "redirect:/admin/info";
     }
 
