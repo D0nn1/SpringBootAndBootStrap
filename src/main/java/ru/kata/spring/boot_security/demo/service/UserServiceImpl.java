@@ -4,7 +4,7 @@ package ru.kata.spring.boot_security.demo.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.kata.spring.boot_security.demo.dao.RoleRepository;
 import ru.kata.spring.boot_security.demo.dao.UserRepository;
@@ -12,21 +12,23 @@ import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 
 import javax.transaction.Transactional;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 
 @Service
 public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     private RoleRepository roleRepository;
-    private BCryptPasswordEncoder encoder;
 
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, BCryptPasswordEncoder encoder) {
+    public UserServiceImpl(UserRepository userRepository,
+                           RoleRepository roleRepository) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
-        this.encoder = encoder;
     }
 
     @Override
@@ -95,7 +97,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void removeRole(int userId, String roleName) {
         User user = userRepository.getById(userId);
-        List<Role> userRoles = (List<Role>) user.getRoles();
+        Set<Role> userRoles = user.getRoles();
         Role roleToRemove = userRoles.stream()
                 .filter(role -> role.getAuthority().equals(roleName))
                 .findFirst()
@@ -120,7 +122,7 @@ public class UserServiceImpl implements UserService {
             newRole = new Role(roleName);
             roleRepository.save(newRole);
         }
-        Collection<Role> userRoles = user.getRoles();
+        Set<Role> userRoles = user.getRoles();
         userRoles.add(newRole);
         user.setRoles(userRoles);
         userRepository.save(user);
@@ -144,14 +146,10 @@ public class UserServiceImpl implements UserService {
         return role;
     }
 
-    @Override
-    public String encodePassword(String password) {
-        return encoder.encode(password);
-    }
 
     @Override
-    public User setAndEncodePassword(User user) {
-        user.setPassword(encodePassword(user.getPassword()));
+    public User setAndEncodePassword(User user, PasswordEncoder passwordEncoder) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return user;
     }
 

@@ -2,6 +2,7 @@ package ru.kata.spring.boot_security.demo.service;
 
 
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 
@@ -35,7 +36,5 @@ public interface UserService extends UserDetailsService {
 
     Role convertStringToRole(String string);
 
-    String encodePassword(String password);
-
-    User setAndEncodePassword(User user);
+    User setAndEncodePassword(User user, PasswordEncoder passwordEncoder);
 }
