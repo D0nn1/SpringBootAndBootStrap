@@ -51,7 +51,7 @@ public class AdminController {
     }
 
 
-    @PostMapping("/saveUpdatedUser")
+    @PatchMapping("/saveUpdatedUser")
     public String saveUpdatedUser(@ModelAttribute("updatedUser") User user,
                                   @RequestParam(name = "selectedRoles", required = false) List<String> selectedRoles) {
         userService.saveUser(userService.setAndEncodePassword(user, passwordEncoder), selectedRoles);
@@ -73,17 +73,16 @@ public class AdminController {
         return "redirect:/admin/info";
     }
 
-    @PostMapping("/remove-role")
-    public String removeRole(@RequestParam("roleName") String roleName) {
-        userService.removeRole(roleName);
+    @DeleteMapping("/remove-role/{role}")
+    public String removeRole(@PathVariable String role) {
+        userService.removeRole(role);
         return "redirect:/admin/info";
     }
 
 
-    @GetMapping("/deleteUser")
-    public String deleteUser(@RequestParam("userId") int id) {
-        userService.deleteUser(id);
+    @DeleteMapping("/deleteUser/{userId}")
+    public String deleteUser(@PathVariable int userId) {
+        userService.deleteUser(userId);
         return "redirect:/admin/info";
     }
 }
-

@@ -36,8 +36,8 @@
                     <input type="hidden" name="userId" th:value="${user.id}">
                     <button type="submit">Update</button>
                 </form>
-                <form th:action="@{/admin/deleteUser}" method="get">
-                    <input type="hidden" name="userId" th:value="${user.id}">
+                <form th:action="@{'/admin/deleteUser/' + ${user.id}}" method="post">
+                    <input type="hidden" name="_method" value="DELETE">
                     <button type="submit">Delete</button>
                 </form>
             </td>
@@ -60,8 +60,8 @@
 <ul>
     <li th:each="role : ${allRoles}">
         <span th:text="${role.authority}"></span>
-        <form th:action="@{/admin/remove-role/}" method="post">
-            <input type="hidden" name="roleName" th:value="${role.authority}">
+        <form th:action="@{'/admin/remove-role/' + ${role.authority}}" method="post">
+            <input type="hidden" name="_method" value="DELETE">
             <button type="submit">Удалить</button>
         </form>
     </li>

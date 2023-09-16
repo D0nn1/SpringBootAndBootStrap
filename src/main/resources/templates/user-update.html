@@ -39,6 +39,7 @@
         <select name="selectedRoles" multiple="multiple">
             <option th:each="role : ${roles}" th:value="${role.authority}" th:text="${role.authority}"></option>
         </select>
+        <input type="hidden" name="_method" value="PATCH">
         <input type="submit" class="submit-button" value="OK">
         <br><br>
     </form>
