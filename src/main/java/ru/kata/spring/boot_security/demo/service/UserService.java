@@ -30,8 +30,6 @@ public interface UserService extends UserDetailsService {
 
     void removeRole(String roleName);
 
-    void addRoleToCurrentUser(int userId, String roleName);
-
     Set<Role> convertStringToRole(List<String> stringList);
 
     Role convertStringToRole(String string);

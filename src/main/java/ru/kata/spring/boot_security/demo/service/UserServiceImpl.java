@@ -114,21 +114,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
-    public void addRoleToCurrentUser(int userId, String roleName) {
-        User user = userRepository.findByUsername("donni");
-        Role newRole = roleRepository.getRoleByAuthority(roleName);
-        if (newRole == null) {
-            newRole = new Role(roleName);
-            roleRepository.save(newRole);
-        }
-        Set<Role> userRoles = user.getRoles();
-        userRoles.add(newRole);
-        user.setRoles(userRoles);
-        userRepository.save(user);
-    }
-
-    @Override
     public Set<Role> convertStringToRole(List<String> stringList) {
         Set<Role> listOfRoles = new HashSet<>();
         stringList.forEach(r -> listOfRoles.add(convertStringToRole(r)));

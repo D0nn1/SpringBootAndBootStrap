@@ -25,8 +25,9 @@ public class UserController {
     @GetMapping("/info")
     public String showUser(Principal principal, Model model) {
         User user = (User) userService.loadUserByUsername(principal.getName());
-        model.addAttribute("lonelyUser", user);
-        return "user";
+        model.addAttribute("user", user);
+        model.addAttribute("userRoles", user.getRoles());
+        return "users-page";
     }
 
 

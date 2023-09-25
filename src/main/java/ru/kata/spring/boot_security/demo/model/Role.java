@@ -14,6 +14,10 @@ public class Role implements GrantedAuthority {
 
     private String authority;
 
+    public int getId() {
+        return id;
+    }
+
     @Override
     public String getAuthority() {
         return authority;
